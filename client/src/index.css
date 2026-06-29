@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+:root {
+  color: #171717;
+  background: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: #ffffff;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  background: #ffffff;
+  color: #171717;
+}
+
+button,
+input,
+textarea,
+select,
+img {
+  border-radius: 0;
+}
+
+::selection {
+  background: #fee2e2;
+  color: #171717;
+}
