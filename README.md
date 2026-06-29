@@ -4,10 +4,6 @@ A full-stack blog platform where users can register, write Markdown posts, comme
 manage their profile. It has a **React + TypeScript** frontend and an **Express + Prisma +
 PostgreSQL** backend, secured with **JWT authentication** and **bcrypt** password hashing.
 
-The UI uses an editorial/print aesthetic: **sharp (non-rounded) borders** everywhere, a
-**serif** typeface for titles and article content, and a **sans-serif** typeface for UI
-controls.
-
 ---
 
 ## Live Demo
