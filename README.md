@@ -10,6 +10,19 @@ controls.
 
 ---
 
+## Live Demo
+
+| | URL |
+|--|--|
+| **Frontend (Netlify)** | <https://lively-hummingbird-77986f.netlify.app> |
+| **Backend API (Railway)** | <https://blog-website-assesment-production.up.railway.app/api> |
+| **API health check** | <https://blog-website-assesment-production.up.railway.app/api/health> |
+
+> The backend is hosted on a free tier and may take ~30–50 seconds to wake up on the first
+> request after a period of inactivity.
+
+---
+
 ## Features
 
 ### Core
@@ -197,6 +210,34 @@ Base URL: `http://localhost:5000/api`. Protected routes require an
 | `npm run dev` | Start the Vite dev server |
 | `npm run build` | Type-check and build for production |
 | `npm run preview` | Preview the production build |
+
+---
+
+## Design Decisions & Assumptions
+
+- **Layered backend architecture** (routes → controllers → services → repositories) for clear
+  separation of concerns. The repository layer is the only place that touches Prisma, so the
+  data source could be swapped without changing business logic.
+- **Custom JWT authentication** (rather than a managed auth provider) to satisfy the brief's
+  explicit requirements: bcrypt password hashing and dedicated `/auth/register`, `/auth/login`,
+  `/auth/logout` routes. The token is returned in the response and sent back via the
+  `Authorization` header; an httpOnly cookie is also set for convenience.
+- **Authorization is strict per the brief**: only the *author* of a post or comment can edit or
+  delete it. A post's author cannot moderate other users' comments — the spec limits comment
+  edit/delete to the comment's own author.
+- **PostgreSQL + Prisma** instead of MongoDB. The brief allows "your preferred stack"; Prisma's
+  schema also serves as the database design document, and it is hosted on a managed Postgres
+  (Neon).
+- **Cloudinary** is used only for profile-picture storage (the single image feature in the
+  brief). Avatar upload degrades gracefully (returns `503`) when Cloudinary is not configured.
+- **Deployment**: the backend runs on **Railway** and the frontend on **Netlify**. The brief
+  suggests "a platform like Heroku"; Railway is used as an equivalent since Heroku no longer has
+  a free tier.
+- **Validation & errors**: request bodies are validated with Zod, and a single centralized error
+  handler maps validation, Prisma, and application errors to consistent JSON responses.
+- **Assumptions**: the home-page "description" is an excerpt derived from the post content;
+  category is optional; passwords must be at least 6 characters; emails are unique; listings are
+  paginated (6 per page on the home feed, 5 per page on a profile).
 
 ---
 
